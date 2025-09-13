@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Recommender</title>
+
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Book Recommender</h1>
+
+        <!-- User input field -->
         <input type="text" id="bookInput" placeholder="Enter a book title..." />
+
+        <!-- Button to trigger recommendation -->
         <button onclick="getRecommendations()">Recommend</button>
+
+        <!-- Area to display results -->
         <ul id="results"></ul>
     </div>
 
     <script>
+        // Function to send title to backend and receive recommendations
         function getRecommendations() {
             const title = document.getElementById('bookInput').value;
+
             fetch('/recommend', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -29,12 +39,13 @@
                 if (data.recommendations.length === 0) {
                     resultList.innerHTML = '<li>No recommendations found.</li>';
                 } else {
+                    // Loop through recommended books and display them
                     data.recommendations.forEach(book => {
                         const li = document.createElement('li');
                         li.innerHTML = `<strong>${book.title}</strong><br>
                                         Author: ${book.authors}<br>
                                         Rating: ${book.average_rating}<br>
-                                        Year: ${book.published_year}`;
+                                        Year: ${parseInt(book.published_year)}`;
                         resultList.appendChild(li);
                     });
                 }
