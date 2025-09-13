@@ -25,12 +25,16 @@
             .then(data => {
                 const resultList = document.getElementById('results');
                 resultList.innerHTML = '';
+
                 if (data.recommendations.length === 0) {
                     resultList.innerHTML = '<li>No recommendations found.</li>';
                 } else {
                     data.recommendations.forEach(book => {
                         const li = document.createElement('li');
-                        li.textContent = book;
+                        li.innerHTML = `<strong>${book.title}</strong><br>
+                                        Author: ${book.authors}<br>
+                                        Rating: ${book.average_rating}<br>
+                                        Year: ${book.published_year}`;
                         resultList.appendChild(li);
                     });
                 }
