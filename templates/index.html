@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Book Recommender</h1>
+        <input type="text" id="bookInput" placeholder="Enter a book title..." />
+        <button onclick="getRecommendations()">Recommend</button>
+        <ul id="results"></ul>
+    </div>
+
+    <script>
+        function getRecommendations() {
+            const title = document.getElementById('bookInput').value;
+            fetch('/recommend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: title })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultList = document.getElementById('results');
+                resultList.innerHTML = '';
+                if (data.recommendations.length === 0) {
+                    resultList.innerHTML = '<li>No recommendations found.</li>';
+                } else {
+                    data.recommendations.forEach(book => {
+                        const li = document.createElement('li');
+                        li.textContent = book;
+                        resultList.appendChild(li);
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
